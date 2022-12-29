@@ -1,0 +1,41 @@
+html, body{ height: 100%;}
+body{
+    background-image: url("https://media.tenor.com/2h7enlv6ZWMAAAAd/streets-of-rage-streets-of-rage4.gif");
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.in-game-menu{
+    width: 40%;
+    padding: 100px;
+}
+
+h1{
+    color: white;
+}
+
+p{
+    color: white;
+}
+
+.grid-container {
+    width: 60%;
+    display: grid;
+    grid-template-columns: repeat(20, 1fr);
+    grid-template-rows: repeat(20, 1fr);
+    gap: 5px;
+    background-color: transparent;
+    padding: 100px;
+}
+
+.grid-container > div {
+    background-color: white;
+    height: 30px;
+    width: 30px;
+    border: 3px solid black;
+    text-align: center;
+    font-size: 20px;
+}
