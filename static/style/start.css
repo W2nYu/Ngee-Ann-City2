@@ -21,20 +21,23 @@ p{
     color: white;
 }
 
-.grid-container {
+.grid-side{
     width: 60%;
+}
+
+.grid-container {
     display: grid;
     grid-template-columns: repeat(20, 1fr);
     grid-template-rows: repeat(20, 1fr);
     gap: 5px;
     background-color: transparent;
-    padding: 100px;
+    padding: 75px;
 }
 
 .grid-container > div {
     background-color: white;
-    height: 30px;
-    width: 30px;
+    height: 32px;
+    width: 32px;
     border: 3px solid black;
     text-align: center;
     font-size: 20px;
