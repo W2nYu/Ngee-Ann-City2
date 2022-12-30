@@ -31,7 +31,7 @@ p{
     grid-template-rows: repeat(20, 1fr);
     gap: 5px;
     background-color: transparent;
-    padding: 75px;
+    padding: 50px;
 }
 
 .grid-container > div {

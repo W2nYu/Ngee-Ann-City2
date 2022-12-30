@@ -1,7 +1,7 @@
 #Import needed packages
 import random
 import time
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 #Funtions for the games
 
@@ -57,7 +57,6 @@ def rand_pool(pool_list):
     randDraw = [pool_list[randInt], randInt]
     return randDraw
 
-
 #Variable setting
 grid_size = 20
 grid = [[" " for col in range(grid_size)]for row in range(grid_size)]
@@ -66,6 +65,8 @@ building_list = ['Residential', 'Industry', 'Commercial', 'Park', 'Road']
 turns = 0
 coins = 16
 
+#Variable for building choice
+
 #Various web pages
 app = Flask(__name__)
 
@@ -73,13 +74,23 @@ app = Flask(__name__)
 def index():
    return render_template("index.html")
 
-@app.route("/start_game")
+@app.route("/start_game", methods=["POST", "GET"])
 def start_game():
    choice1 = rand_pool(building_list_symbols)
    choice2 = rand_pool(building_list_symbols)
    choice1_building = building_list[choice1[1]]
    choice2_building = building_list[choice2[1]]
-   return render_template("start_game.html", gridz = grid, c1 = choice1_building, c2 = choice2_building, cn = coins, tn = turns)
+   if request.method == "POST":
+      plot = request.form["Plt"]
+      choice = request.form["C"]
+      if choice == "1":
+         build_building(grid, choice1[0], turns, plot)
+      elif choice == "2":
+         build_building(grid, choice2[0], turns, plot)
+      return render_template("start_game.html", gridz = grid, c1 = choice1_building, c2 = choice2_building, cn = coins, tn = turns)
+   else:
+
+      return render_template("start_game.html", gridz = grid, c1 = choice1_building, c2 = choice2_building, cn = coins, tn = turns)
     
 @app.route("/exit_game")
 def exit_game():

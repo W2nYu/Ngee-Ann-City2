@@ -11,22 +11,39 @@
         <div class="in-game-menu">
             <h1>Ngee Ann City</h1>
             <br>
+            <p>Coins: {{cn}}</p>
+            <p>Turns: {{tn}}</p>
+            <p>Points: Not available yet</p>
+            <br>
+            <p>Building options: </p>
+            <p>1. Build a {{c1}}</p>
+            <p>2. Build a {{c2}}</p>
+            <br>
+            <!--Input to select the plot-->
+            <form action="#" method="post">
+                <p>Plot: </p>
+                <p><input type="text" name="Plt"/></p>
+                <p>Building choice: </p>
+                <p><input type="text" name="C"/></p>
+                <br>
+                <button type="submit" value="submit" class="btn btn-primary">Build building</button>
+            </form>
+
+            <!--Button for the rest of the options-->
+            <!--
             <a href="start_game" value = "start_game" >
                 <button type="button" class="btn btn-primary">1. Build a {{c1}}</button>
             </a>
             <a href="start_game" value = "start_game" >
                 <button type="button" class="btn btn-primary">2. Build a {{c2}}</button>
             </a>
+            -->
             <br>
             <br>
-            <a href=" " value = "" >
-                <button type="button" class="btn btn-primary">0. Exit game</button>
+            <a href="/" value = "/" >
+                <button type="button" class="btn btn-danger">⇦ Exit game</button>
             </a>
-            <br>
-            <br>
-            <br>
-            <p>Coins: {{cn}}</p>
-            <p>Turns: {{tn}}</p>
+
         </div>
 
         <div class="grid-side">
