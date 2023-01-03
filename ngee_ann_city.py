@@ -10,7 +10,12 @@ def get_db_connection():
     return conn
 
 # Functions(s) to build a building in game
-def build_building(grid, build_choice, turns, option):
+def build_building(build_choice, option):
+  #Utilise the global variables
+  global turns
+  global grid
+  global coins
+
   x_axis = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 'x', 't', ]
   y_axis = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 
@@ -25,6 +30,10 @@ def build_building(grid, build_choice, turns, option):
       if turns == 0:
         grid[row][col] = build_choice #Build choice is string value
         turns+=1
+        if build_choice == ' I ' or build_choice == ' C ':
+          coins+=1
+        else:
+          coins-=1
 
       #If a build has already been built in the grid
       elif turns > 0:
@@ -40,13 +49,17 @@ def build_building(grid, build_choice, turns, option):
           nxt_buildings.append(grid[row][col+1])
 
         count_nxt_buildings = 0
-        for building in building_list:
+        for building in building_list_symbols:
           count_nxt_buildings += nxt_buildings.count(building)
                     
         if count_nxt_buildings != 0:
           if grid[row][col] == " ":
             grid[row][col] = build_choice
             turns+=1
+            if build_choice == ' I ' or build_choice == ' C ':
+              coins+=1
+            else:
+              coins-=1
           else:
             print('Square is unavailable!')
         else:
@@ -56,22 +69,147 @@ def build_building(grid, build_choice, turns, option):
   else:
     print("Please re-enter a valid plot :)")
 
+def randomise_options():
+  global choice1, choice2, choice1_building, choice2_building
+  choice1 = rand_pool(building_list_symbols)
+  choice2 = rand_pool(building_list_symbols)
+  choice1_building = building_list[choice1[1]]
+  choice2_building = building_list[choice2[1]]
 
 def rand_pool(pool_list):
   while True:
     randInt = random.randint(0, 4)
     randDraw = [pool_list[randInt], randInt]
-    return [randInt, randDraw]
+    return randDraw
 
+#Functions(s) for scoring
+def score():
+  global grid
+  global totalScore
 
-# Variable setting
+  scoreR = 0
+  scoreI = 0
+  scoreC = 0
+  scoreO = 0
+  scoreRoad = 0
+
+  for col in range(len(grid)):
+    for row in range(len(grid[col])):
+
+      #Count point for all the residential-R
+      if row == 'R':
+        adj_buildings = []
+        if row != 0:
+          adj_buildings.append(grid[row-1][col])
+        if row != 19:
+          adj_buildings.append(grid[row+1][col])
+        if col != 0:
+          adj_buildings.append(grid[row][col-1])
+        if col != 19:
+          adj_buildings.append(grid[row][col+1])
+
+        if 'I' in adj_buildings:
+          scoreR += 1
+        elif 'R' in adj_buildings:
+          for building in adj_buildings:
+            if building == 'R':
+              scoreR += 1
+        elif 'O' in adj_buildings:
+          for building in adj_buildings:
+            if building == 'O':
+              scoreR += 1
+
+      #Count point for all the industry-I
+      if row == 'I':
+        scoreI += 1
+        adj_buildings = []
+        if row != 0:
+          adj_buildings.append(grid[row-1][col])
+        if row != 19:
+          adj_buildings.append(grid[row+1][col])
+        if col != 0:
+          adj_buildings.append(grid[row][col-1])
+        if col != 19:
+          adj_buildings.append(grid[row][col+1])
+
+        if 'R' in adj_buildings:
+          for building in adj_buildings:
+            if building == 'R':
+              scoreR += 1
+
+      #Count point for all the commercial-C
+      if row == 'C':
+        adj_buildings = []
+        if row != 0:
+          adj_buildings.append(grid[row-1][col])
+        if row != 19:
+          adj_buildings.append(grid[row+1][col])
+        if col != 0:
+          adj_buildings.append(grid[row][col-1])
+        if col != 19:
+          adj_buildings.append(grid[row][col+1])
+
+        if 'C' in adj_buildings:
+          for building in adj_buildings:
+            if building == 'C':
+              scoreC += 1
+        elif 'R' in adj_buildings:
+          for building in adj_buildings:
+            if building == 'R':
+              scoreC += 1
+
+      #Count point for all the park-P
+      if row == 'O':
+        adj_buildings = []
+        if row != 0:
+          adj_buildings.append(grid[row-1][col])
+        if row != 19:
+          adj_buildings.append(grid[row+1][col])
+        if col != 0:
+          adj_buildings.append(grid[row][col-1])
+        if col != 19:
+          adj_buildings.append(grid[row][col+1])
+
+        if 'O' in adj_buildings:
+          for building in adj_buildings:
+            if building == 'O':
+              scoreO += 1
+
+      #Count point for all the park-P
+      if row == '*':
+        adj_buildings = []
+        if col != 0:
+          adj_buildings.append(grid[row][col-1])
+        if col != 19:
+          adj_buildings.append(grid[row][col+1])
+
+        if '*' in adj_buildings:
+          for building in adj_buildings:
+            if building == '*':
+              scoreRoad += 1
+  
+  totalScore = scoreR + scoreI + scoreC + scoreO + scoreRoad
+  print(scoreR)
+  print(scoreI)
+  print(scoreC)
+  print(scoreO)
+  print(scoreRoad)
+  print(totalScore)
+
+# Global variable setting
 grid_size = 20
 grid = [[" " for col in range(grid_size)]for row in range(grid_size)]
-building_list_symbols = [' R ', ' I ', ' C ', ' O ', ' * ']
+building_list_symbols = ['R', 'I', 'C', 'O', '*']
 building_list = ['Residential', 'Industry', 'Commercial', 'Park', 'Road']
 turns = 0
 coins = 16
 totalScore = 0
+
+#Side global variables
+choice1 = ""
+choice2 = ""
+choice1_building = ""
+choice2_building = ""
 
 # Various web pages
 app = Flask(__name__)
@@ -83,24 +221,24 @@ def index():
 
 @app.route("/start_game", methods=["POST", "GET"])
 def start_game():
-  choice1 = rand_pool(building_list_symbols)
-  choice2 = rand_pool(building_list_symbols)
-  choice1_building = building_list[choice1[1]]
-  choice2_building = building_list[choice2[1]]
   if request.method == "POST":
     plot = request.form["Plt"]
     choice = request.form["C"]
     if choice == "1":
-      build_building(grid, choice1[0], turns, plot)
+      build_building(choice1[0], plot)
     elif choice == "2":
-      build_building(grid, choice2[0], turns, plot)
+      build_building(choice2[0], plot)
+    randomise_options()
+    score()
     return render_template("start_game.html", gridz = grid, c1 = choice1_building, c2 = choice2_building, cn = coins, tn = turns, totscore = totalScore)
   else:
+    randomise_options()
     return render_template("start_game.html", gridz = grid, c1 = choice1_building, c2 = choice2_building, cn = coins, tn = turns, totscore = totalScore)
     
 @app.route("/exit_game")
 def exit_game():
   return render_template("exit_game.html")
+
 
 # Main programs
 if __name__ == '__main__':
