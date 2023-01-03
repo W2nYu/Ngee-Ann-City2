@@ -13,7 +13,7 @@
             <br>
             <p>Coins: {{cn}}</p>
             <p>Turns: {{tn}}</p>
-            <p>Points: {{totalScore}}</p>
+            <p>Points: {{totscore}}</p>
             <br>
             <p>Building options: </p>
             <p>1. Build a {{c1}}</p>
@@ -28,26 +28,15 @@
                 <br>
                 <button type="submit" value="submit" class="btn btn-primary">Build building</button>
             </form>
-
-            <!--Button for the rest of the options-->
-            <!--
-            <a href="start_game" value = "start_game" >
-                <button type="button" class="btn btn-primary">1. Build a {{c1}}</button>
-            </a>
-            <a href="start_game" value = "start_game" >
-                <button type="button" class="btn btn-primary">2. Build a {{c2}}</button>
-            </a>
-            -->
             <br>
             <br>
             <a href="/" value = "/" >
                 <button type="button" class="btn btn-danger">⇦ Exit game</button>
             </a>
-
         </div>
 
+        <!--Display the grid-->
         <div class="grid-side">
-
             <div class="grid-container">
                 {% for x in gridz %}
                     {% for i in x %}
