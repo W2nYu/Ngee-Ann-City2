@@ -93,11 +93,11 @@ def score():
   scoreO = 0
   scoreRoad = 0
 
-  for col in range(len(grid)):
-    for row in range(len(grid[col])):
+  for row in range(len(grid)):
+    for col in range(len(grid[row])):
 
       #Count point for all the residential-R
-      if row == 'R':
+      if grid[row][col] == 'R':
         adj_buildings = []
         if row != 0:
           adj_buildings.append(grid[row-1][col])
@@ -120,7 +120,7 @@ def score():
               scoreR += 1
 
       #Count point for all the industry-I
-      if row == 'I':
+      if grid[row][col] == 'I':
         scoreI += 1
         adj_buildings = []
         if row != 0:
@@ -138,7 +138,7 @@ def score():
               scoreR += 1
 
       #Count point for all the commercial-C
-      if row == 'C':
+      if grid[row][col] == 'C':
         adj_buildings = []
         if row != 0:
           adj_buildings.append(grid[row-1][col])
@@ -159,7 +159,7 @@ def score():
               scoreC += 1
 
       #Count point for all the park-P
-      if row == 'O':
+      if grid[row][col] == 'O':
         adj_buildings = []
         if row != 0:
           adj_buildings.append(grid[row-1][col])
@@ -176,7 +176,7 @@ def score():
               scoreO += 1
 
       #Count point for all the park-P
-      if row == '*':
+      if grid[row][col] == '*':
         adj_buildings = []
         if col != 0:
           adj_buildings.append(grid[row][col-1])
@@ -189,12 +189,6 @@ def score():
               scoreRoad += 1
   
   totalScore = scoreR + scoreI + scoreC + scoreO + scoreRoad
-  print(scoreR)
-  print(scoreI)
-  print(scoreC)
-  print(scoreO)
-  print(scoreRoad)
-  print(totalScore)
 
 # Global variable setting
 grid_size = 20
