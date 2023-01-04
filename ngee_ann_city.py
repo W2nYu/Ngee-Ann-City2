@@ -267,6 +267,7 @@ def exit_game():
 
 @app.route("/save_game", methods=["POST", "GET"])
 def save_game():
+    global grid, turns, coins, totalScore
     if request.method == "POST":
         cursor = get_db_connection.cursor()
         name = request.form["GN"]
@@ -275,6 +276,8 @@ def save_game():
                        name, password, grid, turns, coins, totalScore)
         get_db_connection.commit()
         get_db_connection.close()
+        print("Code ran")
+    else:
         return render_template("save_game.html")
 
 
