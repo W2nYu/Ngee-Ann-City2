@@ -276,7 +276,7 @@ def save_game():
                        name, password, grid, turns, coins, totalScore)
         get_db_connection.commit()
         get_db_connection.close()
-        print("Code ran")
+        print("Code rann")
     else:
         return render_template("save_game.html")
 
