@@ -3,13 +3,14 @@ import sqlite3
 print('running file')
 connection = sqlite3.connect('ngeeanncity.db')
 
+# with open('schema.sql') as f:
+#     connection.executescript(f.read())
+res = connection.execute("Select * From saved_games").fetchall()
+print(res)
 
-with open('schema.sql') as f:
-    connection.executescript(f.read())
+# cur = connection.cursor()
 
-cur = connection.cursor()
-
-connection.commit()
+# connection.commit()
 connection.close()
 
 print('ended')

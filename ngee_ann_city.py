@@ -59,17 +59,17 @@ def build_building(build_choice, option):
                     count_nxt_buildings += nxt_buildings.count(building)
 
                 if count_nxt_buildings != 0:
-                    if grid[row][col] == " ":
+                    if grid[row][col] == "X":
                         grid[row][col] = build_choice
                         turns += 1
                         if build_choice == '🏭' or build_choice == '🏢':
                             coins += 1
                         else:
                             coins -= 1
+                    else:
+                        print('Square is unavailable!')
                 else:
-                    print('Square is unavailable!')
-            else:
-                print("You must build next to an existing building!")
+                    print("You must build next to an existing building!")
         else:
             print("Input is not within grid, please re-enter valid plot!")
     else:
@@ -203,7 +203,7 @@ def score():
 
 def reset_glob_variables():
     global grid, turns, coins, totalScore
-    grid = [[" " for col in range(grid_size)]for row in range(grid_size)]
+    grid = [["X" for col in range(grid_size)]for row in range(grid_size)]
     turns = 0
     coins = 16
     totalScore = 0
@@ -211,7 +211,7 @@ def reset_glob_variables():
 
 # Main Global variable setting
 grid_size = 20
-grid = [[" " for col in range(grid_size)]for row in range(grid_size)]
+grid = [["X" for col in range(grid_size)]for row in range(grid_size)]
 building_list_symbols = ['🏠', '🏭', '🏢', '🏞️', '🛣️']
 building_list = ['Residential', 'Industry', 'Commercial', 'Park', 'Road']
 turns = 0
@@ -231,6 +231,7 @@ app = Flask(__name__)
 @app.route("/")
 def index():
     reset_glob_variables()
+    print(grid)
     return render_template("index.html")
 
 
@@ -272,17 +273,23 @@ def save_game():
         conn = get_db_connection()
         name = request.form["GN"]
         password = request.form["Pass"]
+        status = 0
 
-        grid_conv = []
+        #Converting nested list grid into string
+        grid_list = []
+        grid_str = ""
         for row in range(len(grid)):
             for col in range(len(grid[row])):
-                grid_conv.append(grid[row][col] + ',')
+                grid_list.append(grid[row][col] + '_')
+        for ele in grid_list:
+            grid_str += ele
 
-        conn.execute("""INSERT INTO saved_games(name, password, grid, turns, coins, total_score) VALUES (?, ?, ?, ?, ?, ?)""",
-                     (name, password, grid_conv, turns, coins, totalScore))
+        conn.execute("""INSERT INTO saved_games(name, password, status, grid, turns, coins, total_score) VALUES (?, ?, ?, ?, ?, ?, ?)""",
+                     (name, password, status, grid_str, turns, coins, totalScore))
         conn.commit()
         conn.close()
-        print("Code rann")
+
+        return render_template("index.html")
     else:
         return render_template("save_game.html")
 
@@ -294,14 +301,7 @@ def load_game(game_id):
     result = conn.execute(query, (game_id)).fetchall()
     conn.close()
     print(result)
-
-    grid = []
-    turns = 0
-    coins = 0
-    totalScore = 0
-
     return grid, turns, coins, totalScore
-
 
 # Main programs
 if __name__ == '__main__':
