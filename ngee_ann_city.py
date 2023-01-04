@@ -269,13 +269,17 @@ def exit_game():
 def save_game():
     global grid, turns, coins, totalScore
     if request.method == "POST":
-        cursor = get_db_connection.cursor()
+        conn = get_db_connection()
         name = request.form["GN"]
         password = request.form["Pass"]
-        cursor.execute("""INSERT INTO saved_games(name, password, grid, turns, coins, total_score) VALUES (?, ?, ?, ?, ?, ?)""",
-                       name, password, grid, turns, coins, totalScore)
-        get_db_connection.commit()
-        get_db_connection.close()
+
+        # TRIED TO CONVERT TO STRING @WENYU   - SHUQRI
+        delistGrid = [' '.join([str(c) for c in lst]) for lst in grid]
+
+        conn.execute("""INSERT INTO saved_games(name, password, grid, turns, coins, total_score) VALUES (?, ?, ?, ?, ?, ?)""",
+                     (name, password, delistGrid, turns, coins, totalScore))
+        conn.commit()
+        conn.close()
         print("Code ran")
     else:
         return render_template("save_game.html")
@@ -283,16 +287,18 @@ def save_game():
 
 @app.route("/load_game")
 def load_game(game_id):
-
-    conn = sqlite3.connect('ngeeanncity.db')
-    cursor = conn.cursor()
+    conn = get_db_connection()
     query = 'SELECT grid, turns, coins, total_score FROM games WHERE id = ?'
-    cursor.execute(query, (game_id,))
-    result = cursor.fetchone()
-    grid, turns, coins, total_score = result
-    cursor.close()
+    result = conn.execute(query, (game_id)).fetchall()
     conn.close()
-    return grid, turns, coins, total_score
+    print(result)
+
+    grid = []
+    turns = 0
+    coins = 0
+    totalScore = 0
+
+    return grid, turns, coins, totalScore
 
 
 # Main programs

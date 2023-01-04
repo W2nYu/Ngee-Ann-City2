@@ -5,7 +5,7 @@ CREATE TABLE saved_games (
     name TEXT NOT NULL,
     password TEXT NOT NULL,
     status INTEGER NOT NULL,
-    grid BLOB NOT NULL,
+    grid TEXT NOT NULL,
     turns INTEGER NOT NULL,
     coins INTEGER NOT NULL,
     total_score INTEGER NOT NULL
