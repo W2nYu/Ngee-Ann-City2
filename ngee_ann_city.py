@@ -190,6 +190,13 @@ def score():
         
     totalScore = scoreR + scoreI + scoreC + scoreO + scoreRoad
 
+def reset_glob_variables():
+    global grid, turns, coins, totalScore
+    grid = [[" " for col in range(grid_size)]for row in range(grid_size)]
+    turns = 0
+    coins = 16
+    totalScore = 0
+
 # Global variable setting
 grid_size = 20
 grid = [[" " for col in range(grid_size)]for row in range(grid_size)]
@@ -210,6 +217,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
+    reset_glob_variables()
     return render_template("index.html")
 
 
