@@ -197,7 +197,7 @@ def reset_glob_variables():
     coins = 16
     totalScore = 0
 
-# Global variable setting
+# Main Global variable setting
 grid_size = 20
 grid = [[" " for col in range(grid_size)]for row in range(grid_size)]
 building_list_symbols = ['R', 'I', 'C', 'O', '*']
@@ -223,6 +223,10 @@ def index():
 
 @app.route("/start_game", methods=["POST", "GET"])
 def start_game():
+    #Call global variables
+    global turns, coins
+    if turns == 400 or coins == 0:
+        return render_template("end_game.html")
     if request.method == "POST":
         plot = request.form["Plt"]
         choice = request.form["C"]
@@ -240,6 +244,10 @@ def start_game():
 @app.route("/save_game")
 def save_game():
     return render_template("save_game.html")
+
+@app.route("/end_game")
+def end_game():
+    return render_template("end_game.html", gridz = grid, totscore = totalScore)
 
 @app.route("/exit_game")
 def exit_game():
