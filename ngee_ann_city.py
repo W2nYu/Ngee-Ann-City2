@@ -273,11 +273,13 @@ def save_game():
         name = request.form["GN"]
         password = request.form["Pass"]
 
-        # TRIED TO CONVERT TO STRING @WENYU   - SHUQRI
-        delistGrid = [' '.join([str(c) for c in lst]) for lst in grid]
+        grid_conv = []
+        for row in range(len(grid)):
+            for col in range(len(grid[row])):
+                grid_conv.append(grid[row][col] + ',')
 
         conn.execute("""INSERT INTO saved_games(name, password, grid, turns, coins, total_score) VALUES (?, ?, ?, ?, ?, ?)""",
-                     (name, password, delistGrid, turns, coins, totalScore))
+                     (name, password, grid_conv, turns, coins, totalScore))
         conn.commit()
         conn.close()
         print("Code ran")
