@@ -26,9 +26,13 @@ def build_building(build_choice, option):
               11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 
     option = option.lower()
-    if len(option) == 2 and option[1].isnumeric():
+    if len(option) == 3 or len(option) == 2 and option[1].isnumeric():
         x = option[0]
-        y = int(option[1])
+        if len(option) == 2:
+            y = int(option[1])
+        elif len(option) == 3:
+            y = int(str(option[1])+str(option[2]))
+        print(y)
         if x in x_axis and y in y_axis:  # Validate if input option within the grid
             col = x_axis.index(x)
             row = y_axis.index(y)
@@ -205,7 +209,7 @@ def reset_glob_variables():
     global grid, turns, coins, totalScore
     grid = [["X" for col in range(grid_size)]for row in range(grid_size)]
     turns = 0
-    coins = 1
+    coins = 16
     totalScore = 0
 
 
