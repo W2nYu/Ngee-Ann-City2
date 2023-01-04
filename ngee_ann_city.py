@@ -241,9 +241,7 @@ def start_game():
         randomise_options()
         return render_template("start_game.html", gridz = grid, c1 = choice1_building, c1Icon = choice1[0], c2 = choice2_building, c2Icon= choice2[0], cn = coins, tn = turns, totscore = totalScore)
     
-@app.route("/save_game")
-def save_game():
-    return render_template("save_game.html")
+
 
 @app.route("/end_game")
 def end_game():
@@ -253,6 +251,30 @@ def end_game():
 def exit_game():
     return render_template("exit_game.html")
 
+@app.route("/save_game", methods = ["POST", "GET"])
+def save_game():
+   if request.method == "POST":
+    cursor = get_db_connection.cursor()
+    name = request.form["GN"]
+    password = request.form["Pass"]
+    cursor.execute('''INSERT INTO saved_games(name, password, grid, turns, coins, total_score) VALUES(name, password, grid, turns, coins, totalScore) ''')
+    get_db_connection.commit()
+    get_db_connection.close()  
+    return render_template("save_game.html")
+
+@app.route("/load_game")
+def load_game(game_id):
+
+    conn = sqlite3.connect('ngeeanncity.db')
+    cursor = conn.cursor()
+    query = 'SELECT grid, turns, coins, total_score FROM games WHERE id = ?'
+    cursor.execute(query, (game_id,))
+    result = cursor.fetchone()
+    grid, turns, coins, total_score = result
+    cursor.close()
+    conn.close()
+    return grid, turns, coins, total_score
+    
 
 # Main programs
 if __name__ == '__main__':
