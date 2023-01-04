@@ -8,7 +8,7 @@ import sqlite3
 
 def get_db_connection():
     conn = sqlite3.connect('ngeeanncity.db')
-    conn.row_factory = sqlite3.Row
+    #conn.row_factory = sqlite3.Row
     return conn
 
 # Functions(s) to build a building in game
@@ -205,7 +205,7 @@ def reset_glob_variables():
     global grid, turns, coins, totalScore
     grid = [["X" for col in range(grid_size)]for row in range(grid_size)]
     turns = 0
-    coins = 16
+    coins = 1
     totalScore = 0
 
 
@@ -231,7 +231,6 @@ app = Flask(__name__)
 @app.route("/")
 def index():
     reset_glob_variables()
-    print(grid)
     return render_template("index.html")
 
 
@@ -284,6 +283,7 @@ def save_game():
         for ele in grid_list:
             grid_str += ele
 
+        #Inse
         conn.execute("""INSERT INTO saved_games(name, password, status, grid, turns, coins, total_score) VALUES (?, ?, ?, ?, ?, ?, ?)""",
                      (name, password, status, grid_str, turns, coins, totalScore))
         conn.commit()
@@ -295,13 +295,13 @@ def save_game():
 
 
 @app.route("/load_game")
-def load_game(game_id):
+def load_game():
     conn = get_db_connection()
-    query = 'SELECT grid, turns, coins, total_score FROM games WHERE id = ?'
-    result = conn.execute(query, (game_id)).fetchall()
-    conn.close()
+    query = 'SELECT * FROM saved_games WHERE status = 0'
+    result = conn.execute(query).fetchall()
     print(result)
-    return grid, turns, coins, totalScore
+    conn.close()
+    return render_template("load_game.html", savedGameEntries = result)
 
 # Main programs
 if __name__ == '__main__':
