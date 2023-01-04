@@ -31,10 +31,10 @@ h1{
 }
 
 .grid-container > div {
-    background-color: white;
+    background-color: black;
     height: 32px;
     width: 32px;
-    border: 3px solid black;
+    border: 3px solid white;
     text-align: center;
     font-size: 20px;
 }

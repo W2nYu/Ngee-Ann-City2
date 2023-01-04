@@ -30,7 +30,7 @@ def build_building(build_choice, option):
             if turns == 0:
                 grid[row][col] = build_choice #Build choice is string value
                 turns+=1
-                if build_choice == ' I ' or build_choice == ' C ':
+                if build_choice == '🏭' or build_choice == '🏢':
                     coins+=1
                 else:
                     coins-=1
@@ -56,7 +56,7 @@ def build_building(build_choice, option):
                     if grid[row][col] == " ":
                         grid[row][col] = build_choice
                         turns+=1
-                        if build_choice == ' I ' or build_choice == ' C ':
+                        if build_choice == '🏭' or build_choice == '🏢':
                             coins+=1
                         else:
                             coins-=1
@@ -97,7 +97,7 @@ def score():
         for col in range(len(grid[row])):
 
             #Count point for all the residential-R
-            if grid[row][col] == 'R':
+            if grid[row][col] == '🏠':
                 adj_buildings = []
                 if row != 0:
                     adj_buildings.append(grid[row-1][col])
@@ -108,19 +108,19 @@ def score():
                 if col != 19:
                     adj_buildings.append(grid[row][col+1])
 
-                if 'I' in adj_buildings:
+                if '🏭' in adj_buildings:
                     scoreR += 1
-                elif 'R' in adj_buildings:
+                elif '🏠' in adj_buildings:
                     for building in adj_buildings:
-                        if building == 'R':
+                        if building == '🏠':
                             scoreR += 1
-                elif 'O' in adj_buildings:
+                elif '🏞️' in adj_buildings:
                     for building in adj_buildings:
-                        if building == 'O':
+                        if building == '🏞️':
                             scoreR += 1
 
             #Count point for all the industry-I
-            if grid[row][col] == 'I':
+            if grid[row][col] == '🏭':
                 scoreI += 1
                 adj_buildings = []
                 if row != 0:
@@ -132,13 +132,13 @@ def score():
                 if col != 19:
                     adj_buildings.append(grid[row][col+1])
 
-                if 'R' in adj_buildings:
+                if '🏠' in adj_buildings:
                     for building in adj_buildings:
-                        if building == 'R':
+                        if building == '🏠':
                             scoreR += 1
 
             #Count point for all the commercial-C
-            if grid[row][col] == 'C':
+            if grid[row][col] == '🏢':
                 adj_buildings = []
                 if row != 0:
                     adj_buildings.append(grid[row-1][col])
@@ -149,17 +149,17 @@ def score():
                 if col != 19:
                     adj_buildings.append(grid[row][col+1])
 
-                if 'C' in adj_buildings:
+                if '🏢' in adj_buildings:
                     for building in adj_buildings:
-                        if building == 'C':
+                        if building == '🏢':
                             scoreC += 1
-                elif 'R' in adj_buildings:
+                elif '🏠' in adj_buildings:
                     for building in adj_buildings:
-                        if building == 'R':
+                        if building == '🏠':
                             scoreC += 1
 
             #Count point for all the park-P
-            if grid[row][col] == 'O':
+            if grid[row][col] == '🏞️':
                 adj_buildings = []
                 if row != 0:
                     adj_buildings.append(grid[row-1][col])
@@ -170,22 +170,22 @@ def score():
                 if col != 19:
                     adj_buildings.append(grid[row][col+1])
 
-                if 'O' in adj_buildings:
+                if '🏞️' in adj_buildings:
                     for building in adj_buildings:
-                        if building == 'O':
+                        if building == '🏞️':
                             scoreO += 1
 
             #Count point for all the park-P
-            if grid[row][col] == '*':
+            if grid[row][col] == '🛣️':
                 adj_buildings = []
                 if col != 0:
                     adj_buildings.append(grid[row][col-1])
                 if col != 19:
                     adj_buildings.append(grid[row][col+1])
 
-                if '*' in adj_buildings:
+                if '🛣️' in adj_buildings:
                     for building in adj_buildings:
-                        if building == '*':
+                        if building == '🛣️':
                             scoreRoad += 1
         
     totalScore = scoreR + scoreI + scoreC + scoreO + scoreRoad
@@ -200,7 +200,7 @@ def reset_glob_variables():
 # Main Global variable setting
 grid_size = 20
 grid = [[" " for col in range(grid_size)]for row in range(grid_size)]
-building_list_symbols = ['R', 'I', 'C', 'O', '*']
+building_list_symbols = ['🏠', '🏭', '🏢', '🏞️', '🛣️']
 building_list = ['Residential', 'Industry', 'Commercial', 'Park', 'Road']
 turns = 0
 coins = 16
@@ -236,10 +236,10 @@ def start_game():
             build_building(choice2[0], plot)
         randomise_options()
         score()
-        return render_template("start_game.html", gridz = grid, c1 = choice1_building, c2 = choice2_building, cn = coins, tn = turns, totscore = totalScore)
+        return render_template("start_game.html", gridz = grid, c1 = choice1_building, c1Icon = choice1[0], c2 = choice2_building, c2Icon= choice2[0], cn = coins, tn = turns, totscore = totalScore)
     else:
         randomise_options()
-        return render_template("start_game.html", gridz = grid, c1 = choice1_building, c2 = choice2_building, cn = coins, tn = turns, totscore = totalScore)
+        return render_template("start_game.html", gridz = grid, c1 = choice1_building, c1Icon = choice1[0], c2 = choice2_building, c2Icon= choice2[0], cn = coins, tn = turns, totscore = totalScore)
     
 @app.route("/save_game")
 def save_game():
