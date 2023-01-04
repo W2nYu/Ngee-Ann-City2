@@ -11,5 +11,5 @@ DROP TABLE IF EXISTS saved_games;
 --     total_score INTEGER NOT NULL
 -- );
 
-INSERT INTO saved_games(id, name, password, status, grid, turns, coins, total_score)
-VALUE();
+-- INSERT INTO saved_games(id, name, password, status, grid, turns, coins, total_score)
+-- VALUE();
