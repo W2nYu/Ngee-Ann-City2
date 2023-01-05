@@ -329,17 +329,26 @@ def load_game():
     if request.method == "POST":
         password = request.form["psw"]
         idx = request.form["idx"]
-        selected_game = result[int(idx)]
+        selected_game = result[1]
 
         if password == selected_game[2]:
             grid_list = selected_game[4].split("_")
             temp_grid = [grid_list[i:i+20] for i in range(0, len(grid_list), 20)]
+            temp_grid.pop(20)
+            print(temp_grid)
 
             #Load back state
             grid = temp_grid
             turns = selected_game[5]
             coins = selected_game[6]
             totalScore = selected_game[7]
+
+            #Remove loaded data entry from database
+            conn = get_db_connection()
+            query = 'DELETE FROM saved_games WHERE id=?'
+            conn.execute(query, (int(selected_game[0]),))
+            conn.commit()
+            conn.close()
 
             return redirect("/start_game")
         else:
