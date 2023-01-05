@@ -346,9 +346,13 @@ def load_game():
             return render_template("load_game.html", savedGameEntries = result)
     else:
         return render_template("load_game.html", savedGameEntries = result)
+    
+@app.route("/load_game_password")
+def load_game_password():
+    return render_template("load_game_password.html")
 
 @app.route("/leaderboard")
-def load_leaderboard():
+def leaderboard():
     conn = get_db_connection()
     query = 'SELECT name FROM saved_games WHERE status = 1 ORDER BY total_score DESC LIMIT 10'
     result = conn.execute(query).fetchall()
