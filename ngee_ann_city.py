@@ -1,6 +1,6 @@
 # Import needed packages
 import random
-from flask import Flask, render_template, request
+from flask import Flask, redirect, render_template, request
 import sqlite3
 
 # Function for the database connection
@@ -235,6 +235,7 @@ app = Flask(__name__)
 @app.route("/")
 def index():
     reset_glob_variables()
+    print(grid)
     return render_template("index.html")
 
 
@@ -242,8 +243,6 @@ def index():
 def start_game():
     # Call global variables
     global turns, coins
-    if turns == 400 or coins == 0:
-        return render_template("end_game.html")
     if request.method == "POST":
         plot = request.form["Plt"]
         choice = request.form["C"]
@@ -253,6 +252,8 @@ def start_game():
             build_building(choice2[0], plot)
         randomise_options()
         score()
+        if turns == 400 or coins == 0:
+            return redirect('/end_game')
         return render_template("start_game.html", gridz=grid, c1=choice1_building, c1Icon=choice1[0], c2=choice2_building, c2Icon=choice2[0], cn=coins, tn=turns, totscore=totalScore)
     else:
         randomise_options()
@@ -286,8 +287,7 @@ def save_game():
                 grid_list.append(grid[row][col] + '_')
         for ele in grid_list:
             grid_str += ele
-
-        #Inse
+        
         conn.execute("""INSERT INTO saved_games(name, password, status, grid, turns, coins, total_score) VALUES (?, ?, ?, ?, ?, ?, ?)""",
                      (name, password, status, grid_str, turns, coins, totalScore))
         conn.commit()
