@@ -2,24 +2,55 @@
 <html>
     <head>
         <!-- CSS only -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-        <link rel= "stylesheet" type= "text/css" href= "static/style/start.css">
+        <link rel= "stylesheet" type= "text/css" href= "static/style/load.css">
         <title>Ngee Ann City</title>
     </head>
     <body>
         <!-- Web page body -->
         <h1 class="text-center">Load Saved Game</h1>
-        <div class="jumbotron d-flex align-items-center">
-            <div class="container">
-                {% for each_saved_game in savedGameEntries %}
-                    <div class="d-flex p-2">{{each_saved_game[1]}}</div>
+
+        <table class= "dark">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope = "col">Status</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for each_saved_game in savedGameEntries %} 
+                    <tr>
+                        <th scope="row">{{savedGameEntries.index(each_saved_game)+1}} </th>
+                        <td>{{each_saved_game[1]}}</td>
+                        <td><input class='myclass' type='button' value='Load Game' onclick="openForm()"/></td>
+                        
+                        <div class="form-popup" id="myForm">
+                            <form action="#" class="form-container" method="">
+                            <label for="psw"><b>Password</b></label>
+                            <input type="password" placeholder="Enter Password" name="psw" required>
+                            <button type="submit" class="btn">Load Game</button>
+                            <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+                            </form>
+                        </div> 
+                    </tr>
                 {% endfor %}
-            </div>
-        </div>
-          
+            </tbody>
+        </table>
         <!-- Bootstrap Scripts -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+        <script src="password.js"></script>
+        <script>
+            function openForm() {
+              document.getElementById("myForm").style.display = "block";
+            }
+            
+            function closeForm() {
+              document.getElementById("myForm").style.display = "none";
+            }
+            </script>
     </body>
 </html>

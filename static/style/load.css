@@ -9,10 +9,74 @@ body{
 }
 
 .container{
-    width: 80%;
+    width: 800;
+    background-color: white;
+}
+h1{
+    color: white;
+    font: bold 5em/0 Arial, sans-serif;
+    text-align: center;
+    font-size:50px;
+    margin-top:-250px;
     
 }
-.gameowner
-{
-font-size : 200px;
+table{
+position:absolute;
+margin-top: 150px;
+width:250px;
+font-size: 10px;
+font:  5em/0 Arial, sans-serif;
 }
+
+  th,
+  td {
+    padding: 1rem 2rem;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    background-color: white;
+    font-size:30px;
+  }
+  th {
+    font-weight: normal;
+    font-size: .875rem;
+    color: #666;
+    background: #eee;
+    top: 0;
+  }
+
+  td .myclass{
+    padding: 16px 8px;
+  }
+  /* The popup form - hidden by default */
+.form-popup {
+    display: none;
+    position: fixed;
+    bottom: 90;
+    right: 15px;
+    left:90;
+    z-index: 9;
+  }
+  
+  /* Add styles to the form container */
+  .form-container {
+    max-width: 300px;
+    padding: 10px;
+    position: fixed;
+  }
+  
+  /* Full-width input fields */
+  .form-container input[type=text], .form-container input[type=password] {
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    border: none;
+    background: #f1f1f1;
+  }
+  
+  /* When the inputs get focus, do something */
+  .form-container input[type=text]:focus, .form-container input[type=password]:focus {
+    background-color: #ddd;
+    outline: none;
+  }
+  
+  
