@@ -8,7 +8,7 @@ import sqlite3
 
 def get_db_connection():
     conn = sqlite3.connect('ngeeanncity.db')
-    #conn.row_factory = sqlite3.Row
+    # conn.row_factory = sqlite3.Row
     return conn
 
 # Functions(s) to build a building in game
@@ -279,7 +279,7 @@ def save_game():
         password = request.form["Pass"]
         status = 0
 
-        #Converting nested list grid into string
+        # Converting nested list grid into string
         grid_list = []
         grid_str = ""
         for row in range(len(grid)):
@@ -287,7 +287,7 @@ def save_game():
                 grid_list.append(grid[row][col] + '_')
         for ele in grid_list:
             grid_str += ele
-        
+
         conn.execute("""INSERT INTO saved_games(name, password, status, grid, turns, coins, total_score) VALUES (?, ?, ?, ?, ?, ?, ?)""",
                      (name, password, status, grid_str, turns, coins, totalScore))
         conn.commit()
@@ -305,7 +305,19 @@ def load_game():
     result = conn.execute(query).fetchall()
     print(result)
     conn.close()
-    return render_template("load_game.html", savedGameEntries = result)
+    return render_template("load_game.html", savedGameEntries=result)
+
+
+@app.route("/leaderboard")
+def load_leaderboard():
+    conn = get_db_connection()
+    query = 'SELECT name FROM saved_games WHERE status = 1 ORDER BY total_score DESC LIMIT 10'
+    result = conn.execute(query).fetchall()
+    conn.close()
+    print(result)
+
+    return render_template("leaderboard.html", len=len(result), )
+
 
 # Main programs
 if __name__ == '__main__':
