@@ -8,7 +8,7 @@ import sqlite3
 
 def get_db_connection():
     conn = sqlite3.connect('ngeeanncity.db')
-    #conn.row_factory = sqlite3.Row
+    # conn.row_factory = sqlite3.Row
     return conn
 
 # Functions(s) to build a building in game
@@ -300,7 +300,7 @@ def save_game():
         password = request.form["Pass"]
         status = 0
 
-        #Converting nested list grid into string
+        # Converting nested list grid into string
         grid_list = []
         grid_str = ""
         for row in range(len(grid)):
@@ -308,7 +308,7 @@ def save_game():
                 grid_list.append(grid[row][col] + '_')
         for ele in grid_list:
             grid_str += ele
-        
+
         conn.execute("""INSERT INTO saved_games(name, password, status, grid, turns, coins, total_score) VALUES (?, ?, ?, ?, ?, ?, ?)""",
                      (name, password, status, grid_str, turns, coins, totalScore))
         conn.commit()
@@ -327,20 +327,7 @@ def load_game():
     query = 'SELECT * FROM saved_games WHERE status = 0'
     result = conn.execute(query).fetchall()
     conn.close()
-    if request.method =="POST":
-        password = request.form["psw"]
-        idx = request.form["idx"]
-        selected_game = result[int(idx)]
-
-        grid_list = selected_game[4].split('_')
-        temp_grid = [grid_list[i:i+20] for i in range(0, len(grid_list), 20)]
-        
-
-
-
-        return redirect("/start_game")
-    else:
-        return render_template("load_game.html", savedGameEntries = result)
+    return render_template("load_game.html", savedGameEntries = result)
 
 # Main programs
 if __name__ == '__main__':
