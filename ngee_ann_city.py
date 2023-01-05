@@ -317,8 +317,8 @@ def save_game():
         return redirect("/")
     else:
         return render_template("save_game.html")
-
-
+      
+    
 @app.route("/load_game", methods=["POST", "GET"])
 def load_game():
     global grid, turns, coins, totalScore

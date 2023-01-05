@@ -1,0 +1,55 @@
+html, body{ height: 100%;}
+body{
+    background-image: url("https://media.tenor.com/2h7enlv6ZWMAAAAd/streets-of-rage-streets-of-rage4.gif");
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.container{
+    width: 800;
+    background-color: white;
+}
+h1{
+    color: white;
+    font: bold 5em/0 Arial, sans-serif;
+    text-align: center;
+    font-size:50px;
+    margin-top:-250px;
+    
+}
+
+label{
+    display: block;
+    margin-top: 30px;
+    font-size: 16px;
+    font-weight: 500;
+}
+input{
+    display: block;
+    height: 50px;
+    width: 100%;
+    background-color: rgba(255,255,255,0.07);
+    border-radius: 3px;
+    padding: 0 10px;
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 300;
+}
+::placeholder{
+    color: #e5e5e5;
+}
+
+button{
+    margin-top: 50px;
+    width: 100%;
+    background-color: #ffffff;
+    color: #080710;
+    padding: 15px 0;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+}
