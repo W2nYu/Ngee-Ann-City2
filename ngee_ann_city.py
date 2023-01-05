@@ -314,7 +314,7 @@ def save_game():
         conn.commit()
         conn.close()
 
-        return render_template("index.html")
+        return redirect("/")
     else:
         return render_template("save_game.html")
 
@@ -322,12 +322,39 @@ def save_game():
 @app.route("/load_game", methods=["POST", "GET"])
 def load_game():
     global grid, turns, coins, totalScore
-
     conn = get_db_connection()
     query = 'SELECT * FROM saved_games WHERE status = 0'
     result = conn.execute(query).fetchall()
     conn.close()
-    return render_template("load_game.html", savedGameEntries = result)
+    if request.method == "POST":
+        password = request.form["psw"]
+        idx = request.form["idx"]
+        selected_game = result[int(idx)]
+
+        if password == selected_game[2]:
+            grid_list = selected_game[4].split("_")
+            temp_grid = [grid_list[i:i+20] for i in range(0, len(grid_list), 20)]
+
+            #Load back state
+            grid = temp_grid
+            turns = selected_game[5]
+            coins = selected_game[6]
+            totalScore = selected_game[7]
+
+            return redirect("/start_game")
+        else:
+            return render_template("load_game.html", savedGameEntries = result)
+    else:
+        return render_template("load_game.html", savedGameEntries = result)
+
+@app.route("/leaderboard")
+def load_leaderboard():
+    conn = get_db_connection()
+    query = 'SELECT name FROM saved_games WHERE status = 1 ORDER BY total_score DESC LIMIT 10'
+    result = conn.execute(query).fetchall()
+    conn.close()
+    print(result)
+    return render_template("leaderboard.html", top_ten = result )
 
 # Main programs
 if __name__ == '__main__':
