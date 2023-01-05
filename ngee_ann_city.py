@@ -235,7 +235,6 @@ app = Flask(__name__)
 @app.route("/")
 def index():
     reset_glob_variables()
-    print(grid)
     return render_template("index.html")
 
 
@@ -262,7 +261,29 @@ def start_game():
 
 @app.route("/end_game")
 def end_game():
-    return render_template("end_game.html", gridz=grid, totscore=totalScore)
+    global grid, turns, coins, totalScore
+    if request.method == "POST":
+        conn = get_db_connection()
+        name = request.form["GN"]
+        status = 1
+        default_password = 0
+
+        #Converting nested list grid into string
+        grid_list = []
+        grid_str = ""
+        for row in range(len(grid)):
+            for col in range(len(grid[row])):
+                grid_list.append(grid[row][col] + '_')
+        for ele in grid_list:
+            grid_str += ele
+        
+        conn.execute("""INSERT INTO saved_games(name, password, status, grid, turns, coins, total_score) VALUES (?, ?, ?, ?, ?, ?, ?)""",
+                        (name, default_password, status, grid_str, turns, coins, totalScore))
+        conn.commit()
+        conn.close()
+        return redirect("/")
+    else:
+        return render_template("end_game.html", gridz=grid, totscore=totalScore)
 
 
 @app.route("/exit_game")
@@ -298,14 +319,28 @@ def save_game():
         return render_template("save_game.html")
 
 
-@app.route("/load_game")
+@app.route("/load_game", methods=["POST", "GET"])
 def load_game():
+    global grid, turns, coins, totalScore
+
     conn = get_db_connection()
     query = 'SELECT * FROM saved_games WHERE status = 0'
     result = conn.execute(query).fetchall()
-    print(result)
     conn.close()
-    return render_template("load_game.html", savedGameEntries = result)
+    if request.method =="POST":
+        password = request.form["psw"]
+        idx = request.form["idx"]
+        selected_game = result[int(idx)]
+
+        grid_list = selected_game[4].split('_')
+        temp_grid = [grid_list[i:i+20] for i in range(0, len(grid_list), 20)]
+        
+
+
+
+        return redirect("/start_game")
+    else:
+        return render_template("load_game.html", savedGameEntries = result)
 
 # Main programs
 if __name__ == '__main__':

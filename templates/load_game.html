@@ -25,13 +25,14 @@
                         <th scope="row">{{savedGameEntries.index(each_saved_game)+1}} </th>
                         <td>{{each_saved_game[1]}}</td>
                         <td><input class='myclass' type='button' value='Load Game' onclick="openForm()"/></td>
-                        
+                        980`5
                         <div class="form-popup" id="myForm">
-                            <form action="#" class="form-container" method="">
-                            <label for="psw"><b>Password</b></label>
-                            <input type="password" placeholder="Enter Password" name="psw" required>
-                            <button type="submit" class="btn">Load Game</button>
-                            <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+                            <form action="#" class="form-container" method="post">
+                                <label for="psw"><b>Password</b></label>
+                                <input type="text" placeholder="Enter Password" name="psw" required>
+                                <input type="text" value={{savedGameEntries.index(each_saved_game)}} name="idx">
+                                <button type="submit" class="btn">Load Game</button>
+                                <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
                             </form>
                         </div> 
                     </tr>

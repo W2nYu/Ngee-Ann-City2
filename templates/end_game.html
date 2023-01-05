@@ -19,11 +19,18 @@
                 <h1 class="points">Points: {{totscore}}</h1>
             </div>
             <br>
-            <div class="text-center">
-                <br>
-                <a href="/" value = "/" >
-                    <button type="button" class="btn btn-warning">⇦ Home</button>
-                </a>
+            <div class = "justify-content-center">
+                <!--Input to select the plot-->
+                <form action="#" method="post">
+                    <label for="GN"><b style="color: white;">Game name: </b></label>
+                    <input type="text" placeholder="Enter Game Name" name="GN" required>
+                    <div class="text-center">
+                        <br>
+                        <a href="/" value = "/" >
+                            <button type="submit" value="submit" class="btn btn-warning">⇦ Home</button>
+                        </a>
+                    </div>
+                </form>
             </div>
         </div>
 
