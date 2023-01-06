@@ -243,6 +243,10 @@ def index():
 def start_game():
     # Call global variables
     global turns, coins
+    x_axis = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
+    'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'X', 'T', ]
+    y_axis = ['1', '2', '3','4' , '5', '6', '7', '8', '9', '10',
+            '11', '12', '13', '14', '15', '16', '17', '18', '19', '20']
     if request.method == "POST":
         plot = request.form["Plt"]
         choice = request.form["C"]
@@ -254,10 +258,10 @@ def start_game():
         score()
         if turns == 400 or coins == 0:
             return redirect('/end_game')
-        return render_template("start_game.html", gridz=grid, c1=choice1_building, c1Icon=choice1[0], c2=choice2_building, c2Icon=choice2[0], cn=coins, tn=turns, totscore=totalScore)
+        return render_template("start_game.html", gridz=grid, c1=choice1_building, c1Icon=choice1[0], c2=choice2_building, c2Icon=choice2[0], cn=coins, tn=turns, totscore=totalScore, row = x_axis, col=y_axis)
     else:
         randomise_options()
-        return render_template("start_game.html", gridz=grid, c1=choice1_building, c1Icon=choice1[0], c2=choice2_building, c2Icon=choice2[0], cn=coins, tn=turns, totscore=totalScore)
+        return render_template("start_game.html", gridz=grid, c1=choice1_building, c1Icon=choice1[0], c2=choice2_building, c2Icon=choice2[0], cn=coins, tn=turns, totscore=totalScore, row = x_axis, col=y_axis)
 
 
 @app.route("/end_game", methods = ["GET", "POST"])
