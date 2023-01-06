@@ -371,10 +371,9 @@ def load_game_password():
 @app.route("/leaderboard")
 def leaderboard():
     conn = get_db_connection()
-    query = 'SELECT name FROM saved_games WHERE status = 1 ORDER BY total_score DESC LIMIT 10'
+    query = 'SELECT * FROM saved_games WHERE status = 1 ORDER BY total_score DESC LIMIT 10'
     result = conn.execute(query).fetchall()
     conn.close()
-    print(result)
     return render_template("leaderboard.html", top_ten = result )
 
 # Main programs
