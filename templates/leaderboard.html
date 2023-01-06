@@ -9,27 +9,46 @@
   <link rel= "stylesheet" type= "text/css" href= "static/style/leaderboard.css">
 </head>
 <body>
-  <h1 class="text-center"><strong>LEADERBOARD</strong></h1>
-    
-  <!-- Leaderboard Header -->
-  <table class= "dark">
-    <thead>
-    <tr>
-        <th scope="col">#</th>
-        <th scope="col">Name</th>
-        <th scope = "col">Points</th>
-    </tr>
-    </thead>
-    <tbody>
-        {% for each_top_ten in top_ten %} 
-            <tr>
-                <th scope="row">{{top_ten.index(each_top_ten)+1}} </th>
-                <td>{{each_top_ten[1]}}</td>
-                <td>{{each_top_ten[7]}}</td>
-            </tr>
-        {% endfor %}
-    </tbody>
-  </table>
+  <div class="justify-content-center">
+    <div class="text-center">
+        <h1 class="text-center">Leaderboard</h1>
+        <a href="/" value = "/" >
+            <button type="button" class="btn btn-warning mt-5">⇦ Back To Home</button>
+        </a>
+    </div>
+</div>
+
+ <!-- Leaderboard Header -->
+<table class="table table-dark w-50 mt-0">
+  <thead class="display-3">
+  <tr>
+      <th scope="col" class="border-secondary">#</th>
+      <th scope="col" class="border-secondary">Name</th>
+      <th scope="col" class="border-secondary">Points</th>
+  </tr>
+  </thead>
+  <tbody>
+    {% for each_top_ten in top_ten %} 
+          <tr>
+              <th scope="row" class="border-secondary">
+                  <form>
+                      <button class="btn text-white border-0" disabled>{{top_ten.index(each_top_ten)+1}}</button>
+                  </form>
+              </th>
+              <td class="border-secondary">
+                  <form>
+                      <button class="btn text-white border-0" disabled>{{each_top_ten[1]}}</button>
+                  </form>
+              </td>
+              <td class="border-secondary">
+                  <form>
+                      <button class="btn text-white border-0" disabled>{{each_top_ten[7]}}</button>
+                  </form>
+              </td>
+          </tr>
+      {% endfor %}
+  </tbody>
+</table>
 
 <!-- Bootstrap Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>

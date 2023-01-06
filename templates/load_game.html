@@ -9,30 +9,47 @@
     </head>
     <body>
         <!-- Web page body -->
-        <h1 class="text-center">Load Saved Game</h1>
+        
+        <div class="justify-content-center">
+            <div class="text-center">
+                <h1 class="text-center">Load Saved Game</h1>
+                <a href="/" value = "/" >
+                    <button type="button" class="btn btn-warning mt-5">⇦ Back To Home</button>
+                </a>
+            </div>
+        </div>
 
-        <table class= "dark">
-            <thead>
+        <table class="table table-dark w-50 mt-0">
+            <thead class="display-3">
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Name</th>
-                <th scope = "col">Status</th>
+                <th scope="col">Action</th>
             </tr>
             </thead>
             <tbody>
                 {% for each_saved_game in savedGameEntries %} 
                     <tr>
-                        <th scope="row">{{savedGameEntries.index(each_saved_game)+1}} </th>
-                        <td>{{each_saved_game[1]}}</td>
+                        <th scope="row">
+                            <form>
+                                <button class="btn text-white border-0" disabled>{{savedGameEntries.index(each_saved_game)+1}}</button>
+                            </form>
+                        </th>
+                        <td>
+                            <form>
+                                <button class="btn text-white border-0" disabled>{{each_saved_game[1]}}</button>
+                            </form>
+                        </td>
                         <td>
                             <form action="#" method="POST">
-                                <button type="submit" class="btn" name="idx" value={{savedGameEntries.index(each_saved_game)}}>Load Game</button>
+                                <button type="submit" class="btn text-white" name="idx" value={{savedGameEntries.index(each_saved_game)}}>Load Game</button>
                             </form>
                         </td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
+
         <!-- Bootstrap Scripts -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
