@@ -32,7 +32,6 @@ def build_building(build_choice, option):
             y = int(option[1])
         elif len(option) == 3:
             y = int(str(option[1])+str(option[2]))
-        print(y)
         if x in x_axis and y in y_axis:  # Validate if input option within the grid
             col = x_axis.index(x)
             row = y_axis.index(y)
@@ -228,6 +227,8 @@ choice2 = ""
 choice1_building = ""
 choice2_building = ""
 
+idx = 0
+
 # Various web pages
 app = Flask(__name__)
 
@@ -259,7 +260,7 @@ def start_game():
         return render_template("start_game.html", gridz=grid, c1=choice1_building, c1Icon=choice1[0], c2=choice2_building, c2Icon=choice2[0], cn=coins, tn=turns, totscore=totalScore)
 
 
-@app.route("/end_game")
+@app.route("/end_game", methods = ["GET", "POST"])
 def end_game():
     global grid, turns, coins, totalScore
     if request.method == "POST":
@@ -317,19 +318,30 @@ def save_game():
         return redirect("/")
     else:
         return render_template("save_game.html")
-      
-    
+
 @app.route("/load_game", methods=["POST", "GET"])
 def load_game():
-    global grid, turns, coins, totalScore
+    global idx
+    conn = get_db_connection()
+    query = 'SELECT * FROM saved_games WHERE status = 0'
+    result = conn.execute(query).fetchall()
+    conn.close()
+    if request.method == "POST":
+        idx = request.form["idx"]
+        return redirect("/load_game_password")
+    else:
+        return render_template("load_game.html", savedGameEntries = result)
+    
+@app.route("/load_game_password", methods=["POST", "GET"])
+def load_game_password():
+    global grid, turns, coins, totalScore, idx
     conn = get_db_connection()
     query = 'SELECT * FROM saved_games WHERE status = 0'
     result = conn.execute(query).fetchall()
     conn.close()
     if request.method == "POST":
         password = request.form["psw"]
-        idx = request.form["idx"]
-        selected_game = result[1]
+        selected_game = result[int(idx)]
 
         if password == selected_game[2]:
             grid_list = selected_game[4].split("_")
@@ -354,11 +366,7 @@ def load_game():
         else:
             return render_template("load_game.html", savedGameEntries = result)
     else:
-        return render_template("load_game.html", savedGameEntries = result)
-    
-@app.route("/load_game_password")
-def load_game_password():
-    return render_template("load_game_password.html")
+        return render_template("load_game_password.html")
 
 @app.route("/leaderboard")
 def leaderboard():
